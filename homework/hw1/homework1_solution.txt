@@ -1,0 +1,42 @@
+Notes on Methods Used for Homework 1:
+Martin Rodriguez
+Student ID: 1151332
+AMS 209 - Foundations of Scientific Computing
+
+Question 3:
+
+Command 'apropos' 
+- searches to find installed files that correspond to the keyword.
+
+Command 'awk'
+- It can be used to find strings within a file
+- Example ==> awk '/Martin/' input-file.txt
+  - the slashes let awk know what pattern to look for in input-file.txt
+
+Command 'diff'
+- this command compares files line by line and prints the files differences in the file.
+
+Command 'chmod'
+- you can use this file to modify permissions on the file. What the user, members of group, and others can do.
+
+Command 'chown'
+- with this command you can change file owner and group
+
+Command 'ln'
+- this makes links between files. It kind of works like a pointer in C where rather than duplicating a variable, you can simply point an variable that already exists.
+
+Command 'uniq'
+- this command reports repeated lines in a file
+
+
+
+Question 6:
+
+(a) The command I use for this part is 'sort -f roster.txt > roster_sort_firstName.txt' 
+
+Question 7:
+- Check the .bash_profile file
+
+Question 8:
+- Check .bash_profile
+
