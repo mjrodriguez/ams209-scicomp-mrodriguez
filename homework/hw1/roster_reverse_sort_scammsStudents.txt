@@ -1,5 +1,5 @@
-Tianrui, Guo Graduate SCAMMS tguo6@ucsc.edu
-Nathan, Keane Graduate SCAMMS nkeane@ucsc.edu
-Nathan, Heller Graduate SCAMMS nhheller@ucsc.edu
-Adit, Patel Graduate SCAMMS apatel17@ucsc.edu
-Abram, Rodgers Graduate SCAMMS akrodger@ucsc.edu
+Rodgers, Abram Graduate SCAMMS akrodger@ucsc.edu
+Patel, Adit Graduate SCAMMS apatel17@ucsc.edu
+Keane, Nathan Graduate SCAMMS nkeane@ucsc.edu
+Heller, Nathan Graduate SCAMMS nhheller@ucsc.edu
+Guo, Tianrui Graduate SCAMMS tguo6@ucsc.edu
