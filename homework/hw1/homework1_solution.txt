@@ -36,7 +36,9 @@ Question 6:
 
 (a) The command I use for this part is 'sort -f roster.txt >
 roster_sort_firstName.txt'
-(b) 'awk '{ print $2 " " $1 " " $3 " " $4 " " $5 }' roster1.txt | sort > roster_sort_lastName.txt && more roster_sort_lastName.txt '
+(b) 'awk '{ print $2 " " $1 " " $3 " " $4 " " $5 }' roster1.txt | sort
+-f > roster_sort_lastName.txt && more roster_sort_lastName.txt '
+(c) 'awk '{ print $2 " " $1 " " $3 " " $4 " " $5 }' roster1.txt | sort -f > roster_sort_lastName.txt && more roster_sort_lastName.txt'
 
 Question 7:
 - Check the .bash_profile file
