@@ -11,7 +11,9 @@ Command 'apropos'
 Command 'awk'
 - It can be used to find strings within a file
 - Example ==> awk '/Martin/' input-file.txt
-  - the slashes let awk know what pattern to look for in input-file.txt
+  - the slashes let awk know what pattern to look for in
+  input-file.txt
+- Can be used to be rearrange columns within a document.
 
 Command 'diff'
 - this command compares files line by line and prints the files differences in the file.
@@ -32,7 +34,9 @@ Command 'uniq'
 
 Question 6:
 
-(a) The command I use for this part is 'sort -f roster.txt > roster_sort_firstName.txt' 
+(a) The command I use for this part is 'sort -f roster.txt >
+roster_sort_firstName.txt'
+(b) 'awk '{ print $2 " " $1 " " $3 " " $4 " " $5 }' roster1.txt | sort > roster_sort_lastName.txt && more roster_sort_lastName.txt '
 
 Question 7:
 - Check the .bash_profile file
