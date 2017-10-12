@@ -1,6 +1,6 @@
 Martin Rodriguez, Applied Math, mrodrig6@ucsc.edu
 1st year phd
-computational fluid dynamics
+computational fluid dynamics, numerical PDEs, numerical linear algebra
 n/a
 2
 2
