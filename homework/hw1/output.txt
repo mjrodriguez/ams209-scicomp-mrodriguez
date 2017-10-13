@@ -1,0 +1,3 @@
+758008	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209
+401496	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209/chapters
+355952	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209/.git
