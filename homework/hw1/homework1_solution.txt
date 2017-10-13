@@ -62,3 +62,7 @@ Question 7:
 Question 8:
 - Check .bash_profile
 
+Question 9:
+- BEFORE "chmod a+x": r--  1 Martin  staff  346 Oct 13 13:00 README.sh
+- AFTER "chmod a+x": r-x  1 Martin  staff  346 Oct 13 13:00 README.sh
+- Using this command allows for the main user to be able to execute the shell script file. 

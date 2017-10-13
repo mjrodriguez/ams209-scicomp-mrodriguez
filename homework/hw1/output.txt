@@ -1,5 +1,3 @@
-840496	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209
-401472	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209/chapters
-358456	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209/.git
-358152	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209/.git/objects/pack
-358152	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209/.git/objects
+928	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209-scicomp-mrodriguez
+760	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209-scicomp-mrodriguez/.git
+568	/Users/Martin/Documents/College/UCSC/Fall-2017/AMS-209/ams209-scicomp-mrodriguez/.git/objects

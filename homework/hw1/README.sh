@@ -1,5 +1,4 @@
 #!/usr/bin/more
-
 # Any statements followed by "#" are comments.
 
 #/Users/dongwook/Repos/ucsc/soe/teaching/2017-2018/Fall/AMS209/ams209Git/testFiles
