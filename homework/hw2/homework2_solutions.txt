@@ -1,0 +1,43 @@
+Homework 2 Solutions:
+Martin Rodriguez
+AMS 209 - Sci Comp
+ID: 1151332
+
+#--------------------------------------------------
+#
+# COMPILING CODE:
+# I used these flags for both problems
+#            gfortran -fdefault-real-8 -fdefault-double-8
+#
+#---------------------------------------------------
+
+
+Problem 2:
+
+Filename = pi_approx.f90
+
+Threshold = 1.e-4
+-------------------
+N = 2
+Difference = 5.2632432114840810E-006
+
+Threshold = 1.e-8
+-------------------
+N = 4
+Difference = 8.1294566633971499E-009
+
+Threshold = 1.e-12
+-------------------
+N = 7
+Difference = 8.2023277059306565E-013
+
+Threshold = 1.e-16
+-------------------
+N = 10
+Difference = 0.0000000000000000
+
+
+
+
+
+

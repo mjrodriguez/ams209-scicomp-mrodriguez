@@ -1,0 +1,5 @@
+Exercise 1: Basic Program Structure in Fortran
+Martin Rodriguez
+SID: 1151332
+
+I compiled using fortran code but did not return any errors. Once the code compiled then I ran the program. There was nothing displayed on the screen although I assume the numbers were added correctly since computers are very good at arithmetic.
