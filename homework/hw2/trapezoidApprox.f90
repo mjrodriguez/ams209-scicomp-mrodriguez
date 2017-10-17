@@ -9,15 +9,14 @@ contains
 	! --------------------------!
 	! [0] f                     !
 	! --------------------------!
-	
 	real function f(x)
 		implicit none
-		
+
 		real, intent(in) :: x
 		f = x**2 + 1
-		
+
 	end function f
-	
+
   ! -------------------------!
   ! [1] FUNCTION             !
   ! -------------------------!
@@ -28,34 +27,74 @@ contains
 	  ! -------------------------------------!
 	  ! Input variables for trapezoidFunc()  !
 	  ! -------------------------------------!
-	  
 	  real, intent(in) :: a, b
 	  integer, intent(in) :: N
 	  
-	  real :: dx, sum
-	  real, external :: f
-	  
+	  ! -------------------------------------!
+	  ! Grid variables                       !
+	  ! -------------------------------------!
+	  real :: dx, xk, xkm1, fk, fkm1
 	  integer :: i
+	  dx = (b-a)/N   ! Grid spacing
 	  
-	  dx = (b-a)/N
-	  
-	  sum = 0.0
+	  ! -----------------------------------!
+	  ! INTEGRATION LOOP                   !
+	  ! -----------------------------------!
+	  trapezoidFunc = 0.0
 	  do i = 1,N
-		  sum = sum + ( f( (i-1)*dx ) + f(i*dx) )*dx/2.0 
+		  ! computing xk minus 1 and xk
+		  xkm1 = a + (i-1)*dx
+		  xk = a + i*dx
+		  
+		  ! computing fk minus 1 and fk
+		  fkm1 = f(xkm1)
+		  fk = f(xk)
+		  
+		  trapezoidFunc = trapezoidFunc + ( fkm1 + fk )*dx/2.0 
 	  end do
-	  
 	  
   end function trapezoidFunc
 
 
-!   ! -------------------------!
-!   ! [2] SUBROUTINE           !
-!   ! -------------------------!
-!   subroutine trapezoidSub(...)
-!
-!   end subroutine trapezoidSub
-!
-!
+  ! -------------------------!
+  ! [2] SUBROUTINE           !
+  ! -------------------------!
+  subroutine trapezoidSub(a,b,N,I_sub)
+	  implicit none
+	  
+	  ! -------------------------------------!
+	  ! Input variables for trapezoidFunc()  !
+	  ! -------------------------------------!
+	  real, intent(in) :: a, b
+	  integer, intent(in) :: N
+	  real, intent(out) :: I_sub
+	  
+	  ! -------------------------------------!
+	  ! Grid variables                       !
+	  ! -------------------------------------!
+	  real :: dx, xk, xkm1, fk, fkm1
+	  integer :: i
+	  dx = (b-a)/N     ! Grid spacing
+	  
+	  ! -----------------------------------!
+	  ! INTEGRATION LOOP                   !
+	  ! -----------------------------------!
+	  I_sub = 0.0
+	  do i = 1,N
+		  ! computing xk minus 1 and xk
+		  xkm1 = a + (i-1)*dx
+		  xk = a + i*dx
+		  
+		  ! computing fk minus 1 and fk
+		  fkm1 = f(xkm1)
+		  fk = f(xk)
+		  
+		  I_sub = I_sub + ( fkm1 + fk )*dx/2.0 
+	  end do
+	  
+  end subroutine trapezoidSub
+
+
 
   ! -------------------------!
   ! [3] EXACT                !
@@ -81,8 +120,7 @@ program compute_integration
 	use trapezoidApprox
 	
 	implicit none
-	real :: a, b, I_exact, I_sub
-	real, external :: I_func
+	real :: a, b, I_exact, I_sub, I_func
 	integer :: N
 	
 	! Integral bounds and subdivisions
@@ -91,17 +129,14 @@ program compute_integration
 	N = 25
 	
 	
-	call trapezoidExact(a, b, I)
-    I_fun = trapezoidFunc(a, b, N)
-	
-	
-	
-	
+	call trapezoidExact(a, b, I_exact)
+    I_func = trapezoidFunc(a, b, N)
+	call trapezoidSub(a, b, N, I_sub)
 	
     print*, "[1] Trapezoidal in function   =", I_func
-    ! print*, "[2] Trapezoidal in subroutine =", trapezoidSub result
-    print*, "[3] Exact integration         =", I
-    ! print*, "[4] Error in function         =", trapezoidExact - trapezoidFunc result
-    ! print*, "[5] Error in subroutine       =", trapezoidExact - trapezoidSub result
+    print*, "[2] Trapezoidal in subroutine =", I_sub
+    print*, "[3] Exact integration         =", I_exact
+    print*, "[4] Error in function         =", abs(I_exact - I_func)
+    print*, "[5] Error in subroutine       =", abs(I_exact - I_sub)
 
 end program compute_integration
