@@ -126,13 +126,14 @@ program compute_integration
 	! Integral bounds and subdivisions
 	a = 0
 	b = 1
-	N = 25
+	N = 400
 	
 	
 	call trapezoidExact(a, b, I_exact)
     I_func = trapezoidFunc(a, b, N)
 	call trapezoidSub(a, b, N, I_sub)
 	
+	print*, "[0] Number of Elements        =", N
     print*, "[1] Trapezoidal in function   =", I_func
     print*, "[2] Trapezoidal in subroutine =", I_sub
     print*, "[3] Exact integration         =", I_exact

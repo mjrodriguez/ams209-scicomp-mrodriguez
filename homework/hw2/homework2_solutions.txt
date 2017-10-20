@@ -3,18 +3,19 @@ Martin Rodriguez
 AMS 209 - Sci Comp
 ID: 1151332
 
-#--------------------------------------------------
+#--------------------------------------------------------------
 #
 # COMPILING CODE:
 # I used these flags for both problems
 #            gfortran -fdefault-real-8 -fdefault-double-8
 #
-#---------------------------------------------------
+#----------------------------------------------------------------
 
-
-Problem 2:
-
-Filename = pi_approx.f90
+!===========================================================!
+! PROBLEM 2:
+!
+! Filename = pi_approx.f90
+!===========================================================!
 
 Threshold = 1.e-4
 -------------------
@@ -37,6 +38,64 @@ N = 10
 Difference = 0.0000000000000000
 
 
+
+
+!===========================================================!
+! PROBLEM 3:
+!
+! filename = trapezoidApprox.f90
+!===========================================================!
+
+
+I am computing my Error = abs(exact - numerical)
+
+N = 25
+
+ [1] Trapezoidal in function   =   1.3336000000000001     
+ [2] Trapezoidal in subroutine =   1.3336000000000001     
+ [3] Exact integration         =   1.3333333333333333     
+ [4] Error in function         =   2.6666666666685934E-004
+ [5] Error in subroutine       =   2.6666666666685934E-004
+
+---------------------------------------------------------------
+ 
+N = 50
+
+ [1] Trapezoidal in function   =   1.3333999999999997     
+ [2] Trapezoidal in subroutine =   1.3333999999999997     
+ [3] Exact integration         =   1.3333333333333333     
+ [4] Error in function         =   6.6666666666437280E-005
+ [5] Error in subroutine       =   6.6666666666437280E-005
+ 
+---------------------------------------------------------------
+
+N = 100
+
+ [1] Trapezoidal in function   =   1.3333500000000003     
+ [2] Trapezoidal in subroutine =   1.3333500000000003     
+ [3] Exact integration         =   1.3333333333333333     
+ [4] Error in function         =   1.6666666666997898E-005
+ [5] Error in subroutine       =   1.6666666666997898E-005
+
+---------------------------------------------------------------
+
+N = 200
+
+ [1] Trapezoidal in function   =   1.3333375000000012     
+ [2] Trapezoidal in subroutine =   1.3333375000000012     
+ [3] Exact integration         =   1.3333333333333333     
+ [4] Error in function         =   4.1666666679152087E-006
+ [5] Error in subroutine       =   4.1666666679152087E-006
+
+---------------------------------------------------------------
+
+N = 400
+
+ [1] Trapezoidal in function   =   1.3333343750000006     
+ [2] Trapezoidal in subroutine =   1.3333343750000006     
+ [3] Exact integration         =   1.3333333333333333     
+ [4] Error in function         =   1.0416666673673802E-006
+ [5] Error in subroutine       =   1.0416666673673802E-006
 
 
 
