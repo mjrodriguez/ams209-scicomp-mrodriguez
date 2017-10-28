@@ -5,3 +5,24 @@ Homework 3
 
 Problem 1:
 Website link = https://people.ucsc.edu/~mrodrig6/
+
+Problem 2:
+
+Exercise 1: I have modified a couple of bits in file 'RootFinder.F90'.
+
+- I have added 'ftnType' in line 34 of RootFinder.F90
+- I have added the following bit of code and can be found between lines 67-79 in RootFinder.F90
+
+    !--------------------------------------------!
+    ! Printing the target function and x_0       !
+    !--------------------------------------------!
+
+    if (ftnType == 1) then
+       !! (1) f(x) = x + exp(x) + 10/(1+x^2) - 5
+  	 print*, 'f(x) = x + exp(x) + 10./(1.+x**2) - 5.'
+    elseif (ftnType == 2) then
+       !! (2) f(x) = (x-1)log_10(x)
+       !!f = (x - 1.) * log10(x)
+       print*, 'f(x) = (x - 1.) * (x - 2.)'
+    end if
+    print*, 'x_0 = ', xInit
