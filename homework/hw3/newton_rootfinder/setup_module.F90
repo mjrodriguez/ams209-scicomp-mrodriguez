@@ -54,6 +54,18 @@ contains
        stop
     end if
     
+	! ----------------------------------------------------------!
+	! PRINTING THE RUNTIME PARAMETERS                           !
+	! ----------------------------------------------------------!
+	print*, '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+	print*, '              Printing Runtime Parameters:                 '
+	print*, 'Domain............... = [',xBeg, ', ',xEnd,']' 
+	print*, 'Treshold............. = ', threshold
+	print*, 'Max Iterations....... = ', maxIter
+	print*, 'Multiplicity of roots = ', multiplicity
+	print*, 'Run Name............. = ', runName
+	print*, 'Method Type.......... = ', methodType
+	
   end subroutine setup_init
 
   

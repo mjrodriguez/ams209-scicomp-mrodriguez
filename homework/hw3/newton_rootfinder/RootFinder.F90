@@ -67,7 +67,8 @@ program RootFinder
   !--------------------------------------------!
   ! Printing the target function and x_0       !
   !--------------------------------------------!
-
+	print*, '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+	print*, '          Printing Function and Initial Value:             '
   if (ftnType == 1) then
      !! (1) f(x) = x + exp(x) + 10/(1+x^2) - 5
 	 print*, 'f(x) = x + exp(x) + 10./(1.+x**2) - 5.'

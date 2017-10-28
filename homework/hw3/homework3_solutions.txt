@@ -3,10 +3,17 @@ ID = 1151332
 AMS 209
 Homework 3
 
+
+############################################################################
+
 Problem 1:
 Website link = https://people.ucsc.edu/~mrodrig6/
 
+###########################################################################
+
 Problem 2:
+
+------------------------------------------------------------------------------------
 
 Exercise 1: I have modified a couple of bits in file 'RootFinder.F90'.
 
@@ -26,3 +33,22 @@ Exercise 1: I have modified a couple of bits in file 'RootFinder.F90'.
        print*, 'f(x) = (x - 1.) * (x - 2.)'
     end if
     print*, 'x_0 = ', xInit
+
+---------------------------------------------------------------------------------------
+
+Exercise 2:
+- I have added the following bit of code in between lines 57 and 67 in setup_module.F90
+
+	! ----------------------------------------------------------!
+	! PRINTING THE RUNTIME PARAMETERS                           !
+	! ----------------------------------------------------------!
+	print*, '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+	print*, '              Printing Runtime Parameters:                 '
+	print*, 'Domain............... = [',xBeg, ', ',xEnd,']' 
+	print*, 'Treshold............. = ', threshold
+	print*, 'Max Iterations....... = ', maxIter
+	print*, 'Multiplicity of roots = ', multiplicity
+	print*, 'Run Name............. = ', runName
+	print*, 'Method Type.......... = ', methodType
+
+-----------------------------------------------------------------------------------------
