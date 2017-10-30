@@ -30,6 +30,12 @@ contains
        !! (2) f(x) = (x-1)log_10(x)
        !!f = (x - 1.) * log10(x)
        f = (x - 1.) * (x - 2.)
+	elseif (ftnType == 3) then
+		!! (3) f(x) - (x-1)^2 * (x-2)^2
+		f = (x - 1.)**2 * (x - 2.)**2   
+	elseif (ftnType == 4) then
+		!! (4) f(x) = -sin(x)/x + 1
+		f = -sin(x)/x + 1
     end if
 
   end subroutine ftn_eval
@@ -49,6 +55,10 @@ contains
        !! (2) derivative of the second function
        !fprime = log10(x) + (x - 1.)/x
        fprime = (x-1.) + (x-2.)
+	elseif (ftnType == 3) then
+		fprime = 2*(x - 1.)*(x - 2.)**2 + 2*(x - 2.)*(x - 1.)**2
+	elseif (ftnType == 4) then
+		fprime = -( cos(x)*x - sin(x) )/x**2
     end if
 
   end subroutine ftn_derivative

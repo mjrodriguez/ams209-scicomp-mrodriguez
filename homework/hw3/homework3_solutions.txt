@@ -52,3 +52,16 @@ Exercise 2:
 	print*, 'Method Type.......... = ', methodType
 
 -----------------------------------------------------------------------------------------
+
+Exercise 3:
+- See problem2_3.ps file in /hw3 directory
+
+-----------------------------------------------------------------------------------------
+
+Exercise 4:
+- Since all variables are allocated when the code is compiled and the value set when the 'rootFinder.init' is read then there is no need to recompile the code. This is why they are called runtime parameters.
+
+-----------------------------------------------------------------------------------------
+
+Exercise 5:
+- f(x) = (x - 1)^2 * (x - 2)^2 

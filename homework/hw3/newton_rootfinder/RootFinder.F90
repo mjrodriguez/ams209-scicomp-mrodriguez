@@ -76,6 +76,10 @@ program RootFinder
      !! (2) f(x) = (x-1)log_10(x)
      !!f = (x - 1.) * log10(x)
      print*, 'f(x) = (x - 1.) * (x - 2.)'
+  elseif (ftnType == 3) then
+	  print*, 'f(x) = (x - 1.)^2 * (x - 2.)^2'
+  elseif (ftnType == 4) then
+		  print*, 'f(x) = -sin(x)/x + 1'
   end if
   print*, 'x_0 = ', xInit
 
@@ -105,6 +109,9 @@ program RootFinder
 
         !! Update iteration number
         nIter = nIter + 1
+		if (nIter == maxIter) then
+			print*, 'Max numer of iterations'
+		endif
      end do
      
   elseif (methodType == 'modified_newton') then
