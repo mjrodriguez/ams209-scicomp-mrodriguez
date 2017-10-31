@@ -1,0 +1,8 @@
+#---------------------------------------------------#
+# Problem 2 - Newton Root Finder                    #
+# AMS 209 - Homework 3                              #
+# Martin Rodriguez                                  #
+#---------------------------------------------------#
+
+- In order to compile this code then you need to simply run the 'make' command.
+- In order to clean then run the 'make clean' command. 
