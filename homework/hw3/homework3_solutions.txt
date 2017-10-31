@@ -64,4 +64,22 @@ Exercise 4:
 -----------------------------------------------------------------------------------------
 
 Exercise 5:
-- f(x) = (x - 1)^2 * (x - 2)^2 
+- f(x) = (x - 1)^2 * (x - 2)^2
+	-- This works
+- f(x) = -sin(x)/x + 1 
+	-- this doesnt. gets to close to zero.
+	
+-----------------------------------------------------------------------------------------
+		
+Exercise 6:
+
+-----------------------------------------------------------------------------------------
+
+Exercise 8:
+- The make debug runs 'FFLAGS_OPT = $(FFLAGS_DEBUG)' this command which makes the gfortran flags the debugging flags. Therefore rather than compiling with the optimization flags, it will compile with debugging flags. 
+
+
+
+###########################################################################
+
+Problem 3:

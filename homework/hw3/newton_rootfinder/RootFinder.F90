@@ -69,8 +69,8 @@ program RootFinder
   !--------------------------------------------!
 	print*, '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
 	print*, '          Printing Function and Initial Value:             '
-  if (ftnType == 1) then
-     !! (1) f(x) = x + exp(x) + 10/(1+x^2) - 5
+  	if (ftnType == 1) then
+     	!! (1) f(x) = x + exp(x) + 10/(1+x^2) - 5
 	 print*, 'f(x) = x + exp(x) + 10./(1.+x**2) - 5.'
   elseif (ftnType == 2) then
      !! (2) f(x) = (x-1)log_10(x)
@@ -92,9 +92,9 @@ program RootFinder
      !! Keep search iteration until 
      !! (a) residual is bigger then a user-defined threshold value, and
      !! (b) iteration number is less than a user-defined maximum iteration number.
-
+	  print*, 'newton'
      do while ((residual > threshold) .and. (nIter < maxIter))
-
+		
         !! Search using conventional Newton's method
         call newton_method(x,xNew,f,residual)
 
@@ -115,7 +115,7 @@ program RootFinder
      end do
      
   elseif (methodType == 'modified_newton') then
-
+	  print*,'mod newton'
      do while ((residual > threshold) .and. (nIter < maxIter))
         !! Search using a modified Newton's method
         call modified_newton_method(x,xNew,f,residual)
