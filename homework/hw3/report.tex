@@ -121,11 +121,11 @@ Website Link = \href{https://people.ucsc.edu/~mrodrig6/}{Click Here.}
 	\item Since all variables are allocated when the code is compiled and the value set when the 'rootFinder.init' is read then there is no need to recompile the code. This is why they are called runtime parameters.
 	
 	
-	\item
+	\item I added the functions $f(x) = (x-1)^2 (x-2)^2$ and $g(x) = -\frac{\sin x}{x} + 1$. The function $f$ tests the multiplicity of the roots and to see if modified Newton is working properly. While $g(x)$ simply tests whether the code exits when the derivative becomes to close to 0.
 	
-	\item
+	\item Changing the values or setting the values equal to each other does not do anything.
 	
-	\item 
+	\item Erasing the two definition lines in `\texttt{definition.h}' causes no changes in the code. The code still compiles without those two lines of code. 
 	
 	\item The make debug runs '\texttt{FFLAGS\_OPT = \$(FFLAGS\_DEBUG)}' this command which makes the gfortran flags the debugging flags. Therefore rather than compiling with the optimization flags, it will compile with debugging flags. 
 	
