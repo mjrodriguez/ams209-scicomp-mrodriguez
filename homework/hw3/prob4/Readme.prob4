@@ -1,0 +1,21 @@
+!----------------------------------------------------------!
+! Martin Rodriguez 
+! AMS 209 - Homework 3
+! Fall 2017
+! Problem 4 - Buggy codes
+!----------------------------------------------------------!
+
+
+For all code in this problem, we compile the following way:
+
+gfortran -g -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 -fcheck=all -fbacktrace ./buggy_code_k.f90 -o buggy_code_k.out
+
+where k is the number of th ebuggy code.
+
+
+
+We can then run valgrind to inspect the bugs:
+
+valgrind --leak-check=full --track-origins=yes ./buggy_code_k.out 2> output_k
+
+where k is the number of the buggy code.

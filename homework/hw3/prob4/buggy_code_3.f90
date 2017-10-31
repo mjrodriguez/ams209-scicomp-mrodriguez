@@ -25,18 +25,20 @@ program buggy_code_3
   !! DO NOT CHANGE BETWEEN LINE 25 AND LINE 29 ----
   implicit none
   integer ( kind = 4 ) :: n
-  real (kind = 8), allocatable :: x(:)
+  real (kind = 8), allocatable :: x(:), y(:)
+  
 
   n = 10
   !! DO NOT CHANGE BETWEEN LINE 25 AND LINE 29 ----
   
   
   allocate(x(n))
-	print*, x(1)
-  
+  	x(1) = 1; x(2) = 2; x(3) = 3; x(4) = 4; x(5) = 4;
+  	x(6) = 6; x(7) = 7; x(8) = 8; x(9) = 9; x(10) = 10;
   deallocate(x)
-  print*,x(1)
-
+  
+  
+  y = x
 
 
 
