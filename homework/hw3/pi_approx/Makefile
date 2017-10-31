@@ -41,7 +41,7 @@ $(EXE_FILE) : $(OBJS)
 #######################################################################################
 #SOME USEFUL COMMANDS
 clean:
-	@rm -f *.o *.mod *~ rootFinder.exe *.dat
+	@rm -f *.o *.mod *~ piApproximation.exe *.dat
 
 # debug: clean
 debug: FFLAGS_OPT = $(FFLAGS_DEBUG)

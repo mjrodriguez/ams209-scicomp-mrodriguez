@@ -39,7 +39,7 @@ contains
     
     !! Write into a file:
     !!   iteration number, search result x, function value f(x), and residual
-    do i=1,length
+    do i=0,length-1
        write(20,920)i,pi(i),error(i)
     end do
 
