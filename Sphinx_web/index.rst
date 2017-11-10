@@ -3,14 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Martin Rodriguez
+Martin Rodriguez's Website
 ===================================
 
-This is a test introduction for the website to come?
+Hello! I am a first year PhD student in Applied Math at UC Santa Cruz. 
+
+
+
+
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
+   ./aboutme/aboutme
+   ./coursework/ams209/ams209intro
 
 
 
