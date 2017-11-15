@@ -4,7 +4,6 @@ Unit Conversion - The dictionary is represented by units/meters.
 Therefore, the given units are converted to meters and then the dictionary is used
 to display all the other converted units.
 """
-
 def unitConversion(length,unitSystem):
     
     # Defining the dictionary
@@ -20,13 +19,20 @@ def unitConversion(length,unitSystem):
     lengthConverted = dict()
     for d in unitDictionary:
         lengthConverted[d] = length/convertToMetersValue*unitDictionary[d]
-    print lengthConverted 
+    lengthConvTuple = lengthConverted.items()
+    lengthConvTuple.sort()
+    for i in range(0,len(lengthConvTuple)):
+        print lengthConvTuple[i] 
     
     # Converting Units using siDictionary     
     lengthSi = dict()
     for d in siDictionary:
         lengthSi[d] = length/convertToMetersValue*siDictionary[d]
-    print lengthSi 
+    lengthSiTuple = lengthSi.items()
+    lengthSiTuple.sort()
+    
+    for i in range(0,len(lengthSiTuple)):
+        print lengthSiTuple[i] 
         
         
 if __name__ == "__main__":
