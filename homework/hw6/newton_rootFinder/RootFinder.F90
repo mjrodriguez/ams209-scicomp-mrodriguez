@@ -69,7 +69,6 @@ program RootFinder
   !! (b) modified Newton's method.
 
   if (methodType == 'newton') then
-print*,'first if'
      !! Keep search iteration until 
      !! (a) residual is bigger then a user-defined threshold value, and
      !! (b) iteration number is less than a user-defined maximum iteration number.
@@ -93,7 +92,6 @@ print*,'first if'
      end do
      
   elseif (methodType == 'modified_newton') then
-print*,'second if'
      do while ((residual > threshold) .and. (nIter < maxIter))
         !! Search using a modified Newton's method
         call modified_newton_method(x,xNew,f,residual)

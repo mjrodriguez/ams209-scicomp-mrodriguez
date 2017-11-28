@@ -32,7 +32,9 @@ contains
 
     !! compute function derivative evaluated at x
     call ftn_derivative(x,fprime)
-
+	
+	
+	
     !! Exit if f' is near or become zero
     if (abs(fprime) < 1.e-12) then
        print *, '[Error: newton_method] Function derivative becomes very close to zero or zero.'
