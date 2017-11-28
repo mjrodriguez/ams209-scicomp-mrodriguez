@@ -11,6 +11,7 @@ In this problem we had to create a function that right justified the given text.
 
 .. literalinclude:: ./hw4/prob1/problem1.py
 					:language: python
+					:linenos:
 
 ############################
 Problem 2
@@ -18,8 +19,10 @@ Problem 2
 
 .. literalinclude:: ./hw4/prob2/prob2a.py
 					:language: python
+					:linenos:
 .. literalinclude:: ./hw4/prob2/prob2_modified.py
 					:language: python
+					:linenos:
 
 ############################
 Problem 3
@@ -27,6 +30,7 @@ Problem 3
 
 .. literalinclude:: ./hw4/prob3/prob3.py
 					:language: python
+					:linenos:
 					
 ############################
 Problem 4
@@ -34,6 +38,7 @@ Problem 4
 
 .. literalinclude:: ./hw4/prob4/prob4.py
 					:language: python
+					:linenos:
 
 ############################
 Problem 5
@@ -41,6 +46,7 @@ Problem 5
 
 .. literalinclude:: ./hw4/prob5/prob5.py
 					:language: python
+					:linenos:
 
 ############################
 Problem 6
@@ -48,6 +54,7 @@ Problem 6
 
 .. literalinclude:: ./hw4/prob6/prob6.py
 					:language: python
+					:linenos:
 
 ############################
 Problem 7
@@ -55,3 +62,4 @@ Problem 7
 
 .. literalinclude:: ./hw4/prob7/prob7.py
 					:language: python
+					:linenos:
