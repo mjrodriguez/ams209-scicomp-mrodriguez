@@ -28,8 +28,8 @@ contains
        f = x + exp(x) + 10./(1.+x**2) - 5.
     elseif (ftnType == 2) then
        !! (2) f(x) = (x-1)log_10(x)
-       !!f = (x - 1.) * log10(x)
-       f = (x - 1.) * (x - 2.)
+       f = (x - 1.) * log10(x)
+       !!f = (x - 1.) * (x - 2.)
     end if
 
   end subroutine ftn_eval
@@ -47,8 +47,8 @@ contains
        fprime = 1. + exp(x) - 20.*x/(1.+x**2)**2
     elseif (ftnType == 2) then
        !! (2) derivative of the second function
-       !fprime = log10(x) + (x - 1.)/x
-       fprime = (x-1.) + (x-2.)
+       fprime = log10(x) + (x - 1.)/x
+       !!fprime = (x-1.) + (x-2.)
     end if
 
   end subroutine ftn_derivative

@@ -135,7 +135,7 @@ def save_datFile(run_name):
 ########################################################################################
 
 
-def plot_data(run_name, method_type, ftn_type,threshold):
+def plot_data(run_name, method_type, ftn_type, init_guess, threshold):
     # 1. This function produces two figures:
     #     (1) solution (y-axis) vs. iteration number (x-axis), and
     #     (2) error (y-axis) vs. iteration number (x-axis).
@@ -173,7 +173,7 @@ def plot_data(run_name, method_type, ftn_type,threshold):
     plt.subplot(211)
     plt.plot(data[:,0],data[:,1])
     plt.ylabel('$x_n$')
-    plt.title('Convergence of Function '+str(ftn_type)+' Using '+str(method_type))
+    plt.title('Convergence of Function '+str(ftn_type)+' Using '+str(method_type)+'\n $x_0$ = '+str(init_guess)+' , Threshold = '+str(threshold))
     plt.grid(True)
     
     plt.subplot(212)
@@ -197,7 +197,7 @@ def plot_data(run_name, method_type, ftn_type,threshold):
 if __name__ == '__main__':
     
     # Setting the runtime parameters
-    run_name     = "'test'"
+    run_name     = "'newton'"
     method_type  = "'newton'"
     #method_type  = "'modified_newton'"
     x_beg        = -10.0
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     max_iter     = 1000
     threshold    = [1.e-4, 1.e-6, 1.e-8]
     ftn_type     = 2
-    init_guess   = 1.1
+    init_guess   = 0.0001
     multiplicity = 2 
     
     
@@ -213,7 +213,7 @@ if __name__ == '__main__':
     for i in range(0,len(threshold)):
         runtimeParameters_init(run_name, method_type, x_beg, x_end, max_iter, threshold[i], ftn_type, init_guess, multiplicity)
         run_rootFinder()
-        plot_data(run_name, method_type, ftn_type, threshold[i])
+        plot_data(run_name, method_type, ftn_type, init_guess, threshold[i])
         save_datFile(run_name)
         
     
