@@ -1,0 +1,525 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AMS 209 - Homework 6: Connecting Python and Fortran &#8212; website 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">website 1.0.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ams-209-homework-6-connecting-python-and-fortran">
+<h1>AMS 209 - Homework 6: Connecting Python and Fortran<a class="headerlink" href="#ams-209-homework-6-connecting-python-and-fortran" title="Permalink to this headline">¶</a></h1>
+<p>For the most part we have focused on writing code this quarter that solves a problem. However, at times we must test the code with different inputs. Rather than running each individual test case separately, we can create a python script that creates different files for the inputs, compiles, executes code and plots results. Therefore not requiring the user to start the runs for all cases and returning once everything is done. Click <a class="reference external" href="https://users.soe.ucsc.edu/~dongwook/wp-content/uploads/2017/ams209/lectureNote/_build/html/hw/hw6/hw6.html">here</a>.</p>
+<div class="section" id="python-code">
+<h2>Python Code<a class="headerlink" href="#python-code" title="Permalink to this headline">¶</a></h2>
+<p>This is the Python code that drives the different test cases for Newton’s method. The Fortran code for Newton’s method was written by Professor Dongwook Lee and can be <a class="reference external" href="https://users.soe.ucsc.edu/~dongwook/wp-content/uploads/2017/ams209/lectureNote/_build/html/chapters/chapt02/ch02_fortran_example.html#ch02-fortran-example">seen here</a>. The report for this project can be downloaded: <a class="reference download internal" href="../../_downloads/hw6_report.pdf" download=""><code class="xref download docutils literal"><span class="pre">hw6_report.pdf</span></code></a>.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Template file for hw6:</span>
+
+<span class="sd">Directory structure:</span>
+
+<span class="sd">   hw6/</span>
+<span class="sd">       |-- newton_rootFinder/RootFinder.F90</span>
+<span class="sd">       |                     findRootMethod_module.F90</span>
+<span class="sd">       |                     makefile</span>
+<span class="sd">       |                     read_initFile_module.F90</span>
+<span class="sd">       |                     definition.h</span>
+<span class="sd">       |                     ftn_module.F90</span>
+<span class="sd">       |                     output_module.F90</span>
+<span class="sd">       |                     setup_module.F90</span>
+<span class="sd">       |                     (excluding rootFinder.init)</span>
+<span class="sd">       |</span>
+<span class="sd">       |-- pyRun/pyRun_rootFinder.py</span>
+<span class="sd">       </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span> 
+
+
+<span class="k">def</span> <span class="nf">make_make</span><span class="p">():</span>
+    <span class="c1"># 1. Compile the Fortran code if has not been compiled</span>
+    <span class="c1">#    (i.e., if &#39;rootFinder.exe&#39; does not exists yet);</span>
+    <span class="c1">#</span>
+    <span class="c1"># 2. Otherwise do &quot;make clean&quot; first and then &quot;make&quot;.</span>
+    <span class="c1">#</span>
+    <span class="c1"># 3. You need to change your directory from &quot;pyRun/&quot; to</span>
+    <span class="c1">#    &quot;newton_rootFinder/&quot; to compile the Fortran code.</span>
+    
+    <span class="n">doesExecutableExist</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder/rootFinder.exe&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">doesExecutableExist</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder&#39;</span><span class="p">)</span>
+        <span class="n">makeIt</span> <span class="o">=</span> <span class="s1">&#39;make&#39;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">makeIt</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm rootFinder.init*&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm *.dat.*&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder&#39;</span><span class="p">)</span>
+        <span class="n">makeCleanMake</span> <span class="o">=</span> <span class="s1">&#39;make clean &amp;&amp; make&#39;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">makeCleanMake</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm rootFinder.init*&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm *.dat.*&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># os.chdir(&#39;../pyRun/&#39;)</span>
+    
+    
+<span class="k">def</span> <span class="nf">runtimeParameters_init</span><span class="p">(</span><span class="n">run_name</span><span class="p">,</span> <span class="n">method_type</span><span class="p">,</span> <span class="n">x_beg</span><span class="p">,</span> <span class="n">x_end</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">ftn_type</span><span class="p">,</span> <span class="n">init_guess</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">):</span>
+    
+    <span class="c1"># 1. Implement a routine that generates a new &quot;rootFinder.init&quot;</span>
+    <span class="c1">#    runtime parameter file. Use a proper set of</span>
+    <span class="c1">#    input arguments to produce a new rootFinder.init</span>
+    <span class="c1">#    which has all the necessary input parameters to run the Fortran code.</span>
+    <span class="c1">#    For instance, the first few lines can look like:</span>
+    <span class="c1">#      run_name     (... and some space ...) &#39;newton&#39;</span>
+    <span class="c1">#      method_type  (... and some space ...) &#39;newton&#39;</span>
+    <span class="c1">#      ...</span>
+    <span class="c1"># 2. When writing a new &quot;rootFinder.init&quot;, check if there is an old one already.</span>
+    <span class="c1">#    If so, rename the old one to, say, &quot;rootFinder.init.1&quot; before</span>
+    <span class="c1">#    creating a new &quot;rootFinder.init&quot;. You would end up with having multiple</span>
+    <span class="c1">#    of them, e.g., &quot;rootFinder.init.1&quot;, &quot;rootFinder.init.2&quot;, etc.,</span>
+    <span class="c1">#    along with &quot;rootFinder.init&quot; which is the active runtime parameter file in use.</span>
+    
+    
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;./rootFinder.init&#39;</span><span class="p">):</span>
+        <span class="c1"># popen command runs the terminal command and saves output</span>
+        <span class="c1"># running os.system(command) will save a 0</span>
+        <span class="n">commandLine</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;ls ./rootFinder.init* | wc -l&#39;</span><span class="p">)</span>
+        <span class="n">numberOfInitFiles</span> <span class="o">=</span> <span class="n">commandLine</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">commandLine</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+        <span class="n">newFileName</span> <span class="o">=</span> <span class="s1">&#39;rootFinder.init.&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">numberOfInitFiles</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="n">renamingFile</span> <span class="o">=</span> <span class="s1">&#39;mv ./rootFinder.init ./&#39;</span><span class="o">+</span><span class="n">newFileName</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">renamingFile</span><span class="p">)</span>
+        
+        <span class="c1"># Creating New File rootFinder.init</span>
+        <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;rootFinder.init&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;run_name       &#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">+</span><span class="s2">&quot;     # [char] Specify your output file name, e.g., &#39;rootFinder_[run_name].dat&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;method_type    &#39;</span><span class="o">+</span><span class="n">method_type</span><span class="o">+</span><span class="s2">&quot;     # [char] Choose a search method between &#39;newton&#39; and &#39;modified_newton&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;x_beg          &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x_beg</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Setting up the search domain</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;x_end          &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x_end</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Setting up the search domain</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;max_iter       &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_iter</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [int]  Maximum number of iteration</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;threshold      &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Threshold value for solution convergence</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;ftn_type       &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ftn_type</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [int]  Types of function -- either 1 or 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;init_guess     &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">init_guess</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Initial guess for root search. Users are responsible to pick a good one.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;multiplicity   &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">multiplicity</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;        # [int]  The multiplicity of the root when using the modified newton method</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Creating New File rootFinder.init</span>
+        <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;rootFinder.init&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;run_name       &#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">+</span><span class="s2">&quot;     # [char] Specify your output file name, e.g., &#39;rootFinder_[run_name].dat&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;method_type    &#39;</span><span class="o">+</span><span class="n">method_type</span><span class="o">+</span><span class="s2">&quot;     # [char] Choose a search method between &#39;newton&#39; and &#39;modified_newton&#39;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;x_beg          &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x_beg</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Setting up the search domain</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;x_end          &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">x_end</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Setting up the search domain</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;max_iter       &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_iter</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [int]  Maximum number of iteration</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;threshold      &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Threshold value for solution convergence</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;ftn_type       &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ftn_type</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [int]  Types of function -- either 1 or 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;init_guess     &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">init_guess</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;     # [real] Initial guess for root search. Users are responsible to pick a good one.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;multiplicity   &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">multiplicity</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;        # [int]  The multiplicity of the root when using the modified newton method</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+    
+<span class="k">def</span> <span class="nf">run_rootFinder</span><span class="p">():</span>
+    <span class="c1"># This one executes the Fortran excutable, &quot;rootFinder.exe&quot;</span>
+    <span class="c1"># using &quot;rootFinder.init&quot; you just created.</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;./rootFinder.exe&#39;</span><span class="p">)</span>
+      
+
+<span class="c1">########################################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">save_datFile</span><span class="p">(</span><span class="n">run_name</span><span class="p">):</span>
+    <span class="c1"># popen command runs the terminal command and saves output</span>
+    <span class="c1"># running os.system(command) will save a 0</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;./rootFinder_&#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span><span class="p">):</span>
+        <span class="n">commandLine</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;ls ./rootFinder_&#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">+</span><span class="s1">&#39;.dat* | wc -l&#39;</span><span class="p">)</span>
+        <span class="n">numberOfDatFiles</span> <span class="o">=</span> <span class="n">commandLine</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">commandLine</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+        <span class="n">newFileName</span> <span class="o">=</span> <span class="s1">&#39;rootFinder_&#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">+</span><span class="s1">&#39;.dat.&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">numberOfDatFiles</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="n">renamingFile</span> <span class="o">=</span> <span class="s1">&#39;mv ./rootFinder_&#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">+</span><span class="s1">&#39;.dat ./&#39;</span><span class="o">+</span><span class="n">newFileName</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">renamingFile</span><span class="p">)</span>
+
+
+<span class="c1">########################################################################################</span>
+
+
+<span class="k">def</span> <span class="nf">plot_data</span><span class="p">(</span><span class="n">run_name</span><span class="p">,</span> <span class="n">method_type</span><span class="p">,</span> <span class="n">ftn_type</span><span class="p">,</span> <span class="n">init_guess</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="c1"># 1. This function produces two figures:</span>
+    <span class="c1">#     (1) solution (y-axis) vs. iteration number (x-axis), and</span>
+    <span class="c1">#     (2) error (y-axis) vs. iteration number (x-axis).</span>
+    <span class="c1">#</span>
+    <span class="c1"># 2. You can plot the two as either subfigures or two separate figures.</span>
+    <span class="c1">#</span>
+    <span class="c1"># 3. In each figure, you need to have at least:</span>
+    <span class="c1">#    xlabel, ylabel, title, line plot with reasonable choices of linestyle and marker.</span>
+    <span class="c1">#    (see for instance, http://www.scipy-lectures.org/intro/matplotlib/matplotlib.html)</span>
+    <span class="c1">#</span>
+    <span class="c1"># 4. Your plots need to have big enough x and y ranges so that your solution and error</span>
+    <span class="c1">#    graphs are properly fit in the figures.</span>
+    <span class="c1">#    Make sure that you use one same y-range for solutions and errors, respectively,</span>
+    <span class="c1">#    so that ALL plots of three different threshold values have the same respective scales in y.</span>
+    <span class="c1">#</span>
+    <span class="c1"># 5. You need to plot your results to BOTH screen and png files.</span>
+    <span class="c1">#    The png file names should bear information on ftn_type, threshold values at least, e.g.,</span>
+    <span class="c1">#    the file name &quot;result_2_1e-08.png&quot; implies ftn_type = 2, threshold value = 1.e-8.</span>
+    <span class="c1">#    Do not hardwire three different file names, but use string manipulations in naming them</span>
+    <span class="c1">#    in your implementation.</span>
+    <span class="c1">#</span>
+    <span class="c1"># 6. After plotting, you save the data file &quot;rootFinder_newton.dat&quot;</span>
+    <span class="c1">#    to a new name, e.g.., &quot;rootFinder_newton.dat.1&quot;, etc..</span>
+    <span class="c1">#    At the end of running three runs for three different threshold values,</span>
+    <span class="c1">#    you should have collected &quot;rootFinder_newton.dat.1&quot;, &quot;rootFinder_newton.dat.2&quot;,</span>
+    <span class="c1">#    as well as the latest data file &quot;rootFinder_newton.dat&quot;.</span>
+    
+    
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;../newton_rootFinder&#39;</span><span class="p">)</span>
+    <span class="n">plotFilename</span> <span class="o">=</span> <span class="s1">&#39;rootFinder_&#39;</span><span class="o">+</span><span class="n">run_name</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span>
+    <span class="n">figure_name</span> <span class="o">=</span> <span class="s1">&#39;result_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ftn_type</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">plotFilename</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;$x_n$&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Convergence of Function &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ftn_type</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; Using &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">method_type</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> $x_0$ = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">init_guess</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; , Threshold = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">threshold</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">data</span><span class="p">[:,</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Error&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">figure_name</span><span class="p">)</span>
+    
+    
+    
+    
+
+
+
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    
+    <span class="c1"># Setting the runtime parameters</span>
+    <span class="n">run_name</span>     <span class="o">=</span> <span class="s2">&quot;&#39;newton&#39;&quot;</span>
+    <span class="n">method_type</span>  <span class="o">=</span> <span class="s2">&quot;&#39;newton&#39;&quot;</span>
+    <span class="c1">#method_type  = &quot;&#39;modified_newton&#39;&quot;</span>
+    <span class="n">x_beg</span>        <span class="o">=</span> <span class="o">-</span><span class="mf">10.0</span>
+    <span class="n">x_end</span>        <span class="o">=</span> <span class="mf">10.0</span> 
+    <span class="n">max_iter</span>     <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">threshold</span>    <span class="o">=</span> <span class="p">[</span><span class="mf">1.e-4</span><span class="p">,</span> <span class="mf">1.e-6</span><span class="p">,</span> <span class="mf">1.e-8</span><span class="p">]</span>
+    <span class="n">ftn_type</span>     <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">init_guess</span>   <span class="o">=</span> <span class="mf">0.0001</span>
+    <span class="n">multiplicity</span> <span class="o">=</span> <span class="mi">2</span> 
+    
+    
+    <span class="n">make_make</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">threshold</span><span class="p">)):</span>
+        <span class="n">runtimeParameters_init</span><span class="p">(</span><span class="n">run_name</span><span class="p">,</span> <span class="n">method_type</span><span class="p">,</span> <span class="n">x_beg</span><span class="p">,</span> <span class="n">x_end</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">threshold</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ftn_type</span><span class="p">,</span> <span class="n">init_guess</span><span class="p">,</span> <span class="n">multiplicity</span><span class="p">)</span>
+        <span class="n">run_rootFinder</span><span class="p">()</span>
+        <span class="n">plot_data</span><span class="p">(</span><span class="n">run_name</span><span class="p">,</span> <span class="n">method_type</span><span class="p">,</span> <span class="n">ftn_type</span><span class="p">,</span> <span class="n">init_guess</span><span class="p">,</span> <span class="n">threshold</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">save_datFile</span><span class="p">(</span><span class="n">run_name</span><span class="p">)</span>
+        
+    
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">website 1.0.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Martin Rodriguez.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.5+.
+    </div>
+  </body>
+</html>
