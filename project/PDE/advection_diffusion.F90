@@ -17,14 +17,16 @@ program advection_diffusion
 	!! Delaring modules that will be used in this driver
 	use setup_module,        only : xMin, xMax, tmax, N, threshold, a, kappa, Ca, simulationType, discretizationType, setup_init
 	use initialize_module,   only : initialize_simulation, grid_init, advect_init, diffuse_init
-	use pde_solver_module,   only : dt, error, cfl, bc, diffuse_update, advect_update, check_error
+	use pde_solver_module,   only : dt, error, cfl, compute_time_step, bc, diffuse_update, advect_update, check_error
+	use output_module,       only : write_data
 	
 	implicit none
 	
 	!! Initializing Variables
 	real, allocatable, dimension(:) :: x, uold, unew
-	real :: t
-	
+	real    :: t
+	integer :: frameNumber
+	logical :: writeOutput
 	
 	!! Setting up runtime parameters
 	call setup_init()
@@ -38,12 +40,33 @@ program advection_diffusion
 	!! Initializing grid and initial conditions
 	call initialize_simulation(x, uold)
 	
-	!! Compute time step and initialize time
-	call cfl()
+	!! Initialize time and local variables
 	t = 0.0
+	writeOutput = .TRUE.
+	frameNumber = 1
+	call cfl()
+	
+	
+	print*, 'current time = ',t
+	print*, 'maximum time = ', tmax
+	
+	
 	
 	!! PDE SOLVER LOOP for tmax
 	do while (t < tmax)
+		
+		!! Write output if it is true, it is inialized as true.
+		if (writeOutput) then
+			call write_data(N+2, x, uold, t)
+			writeOutput = .false.
+			print*, 'Writing data'
+		end if
+		
+		!! In compute time step we compute the time step switch writOutput logical
+		if (t > 1.e-4) then
+			call compute_time_step(t, frameNumber, writeOutput)
+		end if
+		print*, 'frame number = ',frameNumber
 		
 		!! Note: Boundary Conditions are updated inside the update subroutines
 		if (simulationType == 'diffusion') then
@@ -54,7 +77,9 @@ program advection_diffusion
 			if (error < threshold) then
 				print*, '#----------------------------------------#'
 				print*, '# Final Time = ', t 
-				print*, '#----------------------------------------#'         
+				print*, '#----------------------------------------#'
+				!! Writing the last unew
+				call write_data(N+2, x, unew, t)         
 				exit
 			end if
 		elseif(simulationType == 'advection') then
@@ -63,18 +88,23 @@ program advection_diffusion
 			call advect_update(uold, unew)
 			call diffuse_update(unew, unew)
 		end if
-		
-		
-		
+	
 		!! update time
 		t = t+dt
 		
 		!! Update u
 		uold = unew
 		
+		
+		
+		
+		
 	end do
 	
-	
+	!! Just making usre the last unew is written
+	if (simulationType == 'advection' .or. simulationType == 'advection_diffusion') then
+		call write_data(N+2, x, unew, t)
+	end if
 	
 	
 	

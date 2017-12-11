@@ -20,14 +20,14 @@
 
 module pde_solver_module
 	
-	use setup_module,      only : N, kappa, a, Ca, simulationType, discretizationType
+	use setup_module,      only : N, kappa, a, Ca, tmax, simulationType, discretizationType
 	use initialize_module, only : dx
 	
 	implicit none
 	
 	real, save :: dt
 	real, save :: error
-	
+	real, save :: frameTime
 	
 contains
 	
@@ -43,7 +43,39 @@ contains
 		elseif (simulationType == 'advection_diffusion') then
 			dt = Ca*min(dx/abs(a),dx**2/(2*kappa))	
 		end if
+		frameTime = 0.0
 	end subroutine cfl
+	
+	
+	
+	!!---------------------------------------------------------!!
+	!! COMPUTE TIME STEP                                       !!
+	!!---------------------------------------------------------!!	
+	!! We compute the frameTime at which we need to pull data
+	!! from. If the t+dt is larger then frameTime then we
+	!! make dt = frameTime - t and switch the write logical
+	!! to TRUE. Then it writes after.
+	!!---------------------------------------------------------!!
+	subroutine compute_time_step(t, frameNumber, writeOutput)
+		real, intent(in)       :: t
+		integer, intent(inout) :: frameNumber
+		logical, intent(inout) :: writeOutput
+
+		call cfl()
+		frameTime = frameNumber*tmax/10.0
+		
+		print*, frameTime
+		
+		if ( dt > frameTime - t ) then
+			dt = frameTime - t
+			writeOutput = .TRUE.
+			frameNumber = frameNumber + 1
+		end if
+		
+	end subroutine compute_time_step
+	
+	
+	
 	
 	!!---------------------------------------------------------!!
 	!! SET BOUNDARY CONDITIONS                                 !!

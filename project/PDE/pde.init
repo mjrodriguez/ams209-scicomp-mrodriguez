@@ -1,5 +1,5 @@
 simulation_type       'advection_diffusion'     # [char] Specify advection, diffusion, or advection_diffusion
-discretization_type       'center'     # [char] Specify 'center' or 'upwind'
+discretization_type       'upwind'     # [char] Specify 'center' or 'upwind'
 grid_size    32     # [int] Choose number of elements in spatial domain'
 x_min          0.0     # [real] minimum value of domain
 x_max          1.0     # [real] maximum value of domain
@@ -7,4 +7,4 @@ threshold      0.0001     # [real] Threshold value for solution convergence
 advection_speed      1.0     # [real]  Speed of traveling wave
 diffusion_constant     1.156     # [real] the diffusion constant
 cfl_constant   1.0        # [real]  Constant for CFL condition
-max_time       5.0       # [real] maximum time, may be more than it takes to reach steady state
+max_time       1.0       # [real] maximum time, may be more than it takes to reach steady state

@@ -52,6 +52,7 @@ contains
 	
 	pi = acos(-1.d0)
 	 
+	print*, tmax
 	
 	
 !

@@ -39,14 +39,14 @@ def make_make():
         os.chdir('../PDE')
         makeIt = 'make'
         os.system(makeIt)
-        # os.system('rm rootFinder.init*')
-        # os.system('rm *.dat.*')
+        os.system('rm pde.init*')
+        #os.system('rm *.dat.*')
     else:
         os.chdir('../PDE')
         makeCleanMake = 'make clean && make'
         os.system(makeCleanMake)
-        # os.system('rm PDE.init*')
-        # os.system('rm *.dat.*')
+        os.system('rm pde.init*')
+        #os.system('rm *.dat.*')
     
     # os.chdir('../pyRun/')
     
@@ -117,10 +117,11 @@ def runtimeParameters_init(simulationType, discretizationType, N, xMin, xMax, th
         f.write('advection_speed      '+str(a)+"     # [real]  Speed of traveling wave\n")
         f.write('diffusion_constant     '+str(kappa)+"     # [real] the diffusion constant\n")
         f.write('cfl_constant   '+str(Ca)+"        # [real]  Constant for CFL condition\n")
+        f.write('max_time       '+str(tmax)+"       # [real] maximum time, may be more than it takes to reach steady state")
         f.close()
     
     
-def run_rootFinder():
+def run_pde():
     # This one executes the Fortran excutable, "rootFinder.exe"
     # using "rootFinder.init" you just created.
     os.chdir('../PDE')
@@ -147,7 +148,7 @@ def save_datFile(run_name):
 ########################################################################################
 
 
-def plot_data(run_name, method_type, ftn_type, init_guess, threshold):
+def plot_data(N, simulationType, discretizationType, plotFilename, t):
     # 1. This function produces two figures:
     #     (1) solution (y-axis) vs. iteration number (x-axis), and
     #     (2) error (y-axis) vs. iteration number (x-axis).
@@ -175,27 +176,39 @@ def plot_data(run_name, method_type, ftn_type, init_guess, threshold):
     #    you should have collected "rootFinder_newton.dat.1", "rootFinder_newton.dat.2",
     #    as well as the latest data file "rootFinder_newton.dat".
     
+    print os.getcwd()
+    os.chdir('../PDE')    
+    #plotFilename = 'output_'+str(t)+'.dat'
+    print plotFilename
+    figure_name = './figures/result_'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")+'_'+str(t)+'.png'
     
-    os.chdir('../PDE')
-    plotFilename = 'rootFinder_'+run_name.strip("'")+'.dat'
-    figure_name = 'result_'+str(ftn_type)+'_'+str(threshold)+'.png'
-    
-    data = np.loadtxt(plotFilename)
+    data = np.loadtxt('./results/'+plotFilename)
     fig = plt.figure()
-    plt.subplot(211)
-    plt.plot(data[:,0],data[:,1])
-    plt.ylabel('$x_n$')
-    plt.title('Convergence of Function '+str(ftn_type)+' Using '+str(method_type)+'\n $x_0$ = '+str(init_guess)+' , Threshold = '+str(threshold))
+    plt.plot(data[:,1],data[:,2],'o')
+    plt.ylabel('$u$')
+    # plt.title('Convergence of Function '+str(ftn_type)+' Using '+str(method_type)+'\n $x_0$ = '+str(init_guess)+' , Threshold = '+str(threshold))
     plt.grid(True)
-    
-    plt.subplot(212)
-    plt.plot(data[:,0],data[:,3])
-    plt.xlabel('Iteration')
-    plt.ylabel('Error')
-    plt.grid(True)
+    if (simulationType == "'diffusion'"):
+        plt.ylim(0,100)
+        plt.title('Diffusion PDE, Time = '+str(t))
+    elif (simulationType == "'advection'"):
+        plt.title(discretizationType.strip("'")+' Advection PDE, Time = '+str(t))
+        plt.ylim(-1,1)
+    else:
+        plt.title(discretizationType.strip("'")+' Advection-Diffusion PDE, Time = '+str(t))
+        plt.ylim(-1,1)
+        
     plt.show()
     fig.savefig(figure_name)
-    
+    #
+    # plt.subplot(212)
+    # plt.plot(data[:,0],data[:,3])
+    # plt.xlabel('Iteration')
+    # plt.ylabel('Error')
+    # plt.grid(True)
+    # plt.show()
+    # 
+    #
     
     
     
@@ -209,9 +222,10 @@ def plot_data(run_name, method_type, ftn_type, init_guess, threshold):
 if __name__ == '__main__':
     
     # Defining the runtime parameters
-    # simulationType     = "'diffusion'"
+    #simulationType     = "'diffusion'"
     simulationType     = "'advection_diffusion'"
-    discretizationType = "'center'"
+    #simulationType     = "'advection'"
+    discretizationType = "'upwind'"
     N = 32
     xMin = 0.0
     xMax = 1.0
@@ -219,10 +233,32 @@ if __name__ == '__main__':
     a = 1.0
     kappa = 1.156
     Ca = 1.0
-    tmax = 5.0
+    tmax = 1.0
+    
+    # Creating filename list
+    filenameList = []
     
     make_make()
     runtimeParameters_init(simulationType, discretizationType, N, xMin, xMax, threshold, a, kappa, Ca, tmax)
+    run_pde()
+    
+    for filename in os.listdir('../PDE/results'):
+        print(filename)
+        filenameList.append(filename)
+        
+        
+        
+    print filenameList
+    for i in range(0,len(filenameList)):
+        t = i/10.0
+        plot_data(N, simulationType, discretizationType, filenameList[i], t)
+  #
+  #   # for i in range(1,31):
+    #
+    #
+    #     t = i*10
+    #
+    #     plot_data(simulationType,t)
         # run_rootFinder()
         # plot_data(run_name, method_type, ftn_type, init_guess, threshold[i])
         # save_datFile(run_name)

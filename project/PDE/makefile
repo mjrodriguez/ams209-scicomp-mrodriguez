@@ -16,7 +16,8 @@ OBJS  = advection_diffusion.o \
 	read_initFile_module.o\
 	initialize_module.o  \
 	setup_module.o \
-	pde_solver_module.o
+	pde_solver_module.o\
+	output_module.o
 
 .PHONY: clean
 ########################################################################################
@@ -49,12 +50,14 @@ debug: $(EXE_FILE)
 
 #######################################################################################
 #LET'S DEFINE SOME MODULE DEPENDENCIES!
-advection_diffusion.o: setup_module.o initialize_module.o pde_solver_module.o
+advection_diffusion.o: setup_module.o initialize_module.o pde_solver_module.o output_module.o
 
 setup_module.o : read_initFile_module.o
 
 initialize_module.o : setup_module.o
 
 pde_solver_module.o : setup_module.o initialize_module.o
+
+output_module.o : pde_solver_module.o
 
 #######################################################################################

@@ -37,11 +37,11 @@ contains
 		dx = (xmax - xMin)/N
 		
 		!! Initializing spatial Grid
-		x(1) = xMin - dx/2.0
+		x(1) = -dx/2.0
 		do i=2,N+1
-			x(i) = xMin + (i-0.5)*dx
+			x(i) = xMin + ((i-1)-0.5)*dx
 		end do
-		x(N+2) = xMax + dx/2.0
+		x(N+2) = ( N + 0.5 )*dx
 		
 	end subroutine grid_init
 	
