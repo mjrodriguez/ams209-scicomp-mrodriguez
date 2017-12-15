@@ -18,7 +18,7 @@
 module initialize_module
 	
 
-	use setup_module,  only : xMin, xMax, N, pi, simulationType
+	use setup_module,  only : xMin, xMax, N, pi, simulationType, kappa, a
 	
 	implicit none
 	
@@ -94,6 +94,8 @@ contains
 			call diffuse_init(uold)
 		elseif (simulationType == 'advection' .or. simulationType == 'advection_diffusion') then
 			call advect_init(x, uold)
+			kappa = a*dx/2.0
+			print*, kappa
 		end if
 				
 		

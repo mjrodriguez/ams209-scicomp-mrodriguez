@@ -80,7 +80,8 @@ program advection_diffusion
 				print*, '#----------------------------------------#'
 				!! Writing the last unew
 				call write_data(N+2, x, unew, t)
-				runningOutTheClock = .TRUE.
+				exit
+				!! runningOutTheClock = .False.
 			end if
 		elseif(simulationType == 'advection') then
 			call advect_update(uold, unew)

@@ -179,6 +179,9 @@ def plot_data(N, simulationType, discretizationType, plotFilename, t):
     print os.getcwd()
     os.chdir('../PDE')    
     #plotFilename = 'output_'+str(t)+'.dat'
+    
+    
+    
     print plotFilename
     
     figureFolder = './figures/'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")
@@ -197,7 +200,7 @@ def plot_data(N, simulationType, discretizationType, plotFilename, t):
     plt.grid(True)
     if (simulationType == "'diffusion'"):
         plt.ylim(0,100)
-        plt.title('Diffusion PDE, Time = '+str(t))
+        plt.title('Diffusion PDE')
     elif (simulationType == "'advection'"):
         plt.title(discretizationType.strip("'").title()+' Advection PDE, Time = '+str(t))
         plt.ylim(-1,1)
@@ -205,7 +208,6 @@ def plot_data(N, simulationType, discretizationType, plotFilename, t):
         plt.title(discretizationType.strip("'").title()+' Advection-Diffusion PDE, Time = '+str(t))
         plt.ylim(-1,1)
         
-    plt.show()
     fig.savefig(figure_name)
     #
     # plt.subplot(212)
@@ -217,24 +219,127 @@ def plot_data(N, simulationType, discretizationType, plotFilename, t):
     # 
     #
     
+
+
+
+def plot_data_g(N, simulationType, discretizationType, plotFilename, t):
+    # 1. This function produces two figures:
+    #     (1) solution (y-axis) vs. iteration number (x-axis), and
+    #     (2) error (y-axis) vs. iteration number (x-axis).
+    #
+    # 2. You can plot the two as either subfigures or two separate figures.
+    #
+    # 3. In each figure, you need to have at least:
+    #    xlabel, ylabel, title, line plot with reasonable choices of linestyle and marker.
+    #    (see for instance, http://www.scipy-lectures.org/intro/matplotlib/matplotlib.html)
+    #
+    # 4. Your plots need to have big enough x and y ranges so that your solution and error
+    #    graphs are properly fit in the figures.
+    #    Make sure that you use one same y-range for solutions and errors, respectively,
+    #    so that ALL plots of three different threshold values have the same respective scales in y.
+    #
+    # 5. You need to plot your results to BOTH screen and png files.
+    #    The png file names should bear information on ftn_type, threshold values at least, e.g.,
+    #    the file name "result_2_1e-08.png" implies ftn_type = 2, threshold value = 1.e-8.
+    #    Do not hardwire three different file names, but use string manipulations in naming them
+    #    in your implementation.
+    #
+    # 6. After plotting, you save the data file "rootFinder_newton.dat"
+    #    to a new name, e.g.., "rootFinder_newton.dat.1", etc..
+    #    At the end of running three runs for three different threshold values,
+    #    you should have collected "rootFinder_newton.dat.1", "rootFinder_newton.dat.2",
+    #    as well as the latest data file "rootFinder_newton.dat".
     
+    print os.getcwd()
+    os.chdir('../PDE')    
+
+    print plotFilename
+
+    figure_name = './figures/plotsforh/result_'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")+'_'+str(t)+'.png'
     
+    data = np.loadtxt('./results/'+plotFilename)
+    fig = plt.figure()
+    plt.plot(data[:,1],data[:,2],'o-')
+    plt.ylabel('$u$')
+    plt.grid(True)
+    plt.title(discretizationType.strip("'").title()+' Advection PDE, Time = 1.0')
+    plt.ylim(-1,1)
+    plt.show()
+    fig.savefig(figure_name)
+    #
+    # plt.subplot(212)
+    # plt.plot(data[:,0],data[:,3])
+    # plt.xlabel('Iteration')
+    # plt.ylabel('Error')
+    # plt.grid(True)
+    # plt.show()
+    # 
+    #
+   
+   
+def plot_data_h(N, simulationType, discretizationType, plotFilename, t):
+  # 1. This function produces two figures:
+  #     (1) solution (y-axis) vs. iteration number (x-axis), and
+  #     (2) error (y-axis) vs. iteration number (x-axis).
+  #
+  # 2. You can plot the two as either subfigures or two separate figures.
+  #
+  # 3. In each figure, you need to have at least:
+  #    xlabel, ylabel, title, line plot with reasonable choices of linestyle and marker.
+  #    (see for instance, http://www.scipy-lectures.org/intro/matplotlib/matplotlib.html)
+  #
+  # 4. Your plots need to have big enough x and y ranges so that your solution and error
+  #    graphs are properly fit in the figures.
+  #    Make sure that you use one same y-range for solutions and errors, respectively,
+  #    so that ALL plots of three different threshold values have the same respective scales in y.
+  #
+  # 5. You need to plot your results to BOTH screen and png files.
+  #    The png file names should bear information on ftn_type, threshold values at least, e.g.,
+  #    the file name "result_2_1e-08.png" implies ftn_type = 2, threshold value = 1.e-8.
+  #    Do not hardwire three different file names, but use string manipulations in naming them
+  #    in your implementation.
+  #
+  # 6. After plotting, you save the data file "rootFinder_newton.dat"
+  #    to a new name, e.g.., "rootFinder_newton.dat.1", etc..
+  #    At the end of running three runs for three different threshold values,
+  #    you should have collected "rootFinder_newton.dat.1", "rootFinder_newton.dat.2",
+  #    as well as the latest data file "rootFinder_newton.dat".
+    print os.getcwd()
+    os.chdir('../PDE')    
 
+    print plotFilename
 
+    figure_name = './figures/plotsforh/result_'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")+'_'+str(t)+'.png'
 
-
+    data = np.loadtxt('./results/'+plotFilename)
+    fig = plt.figure()
+    plt.plot(data[:,1],data[:,2],'o-')
+    plt.ylabel('$u$')
+    plt.grid(True)
+    plt.title(discretizationType.strip("'").title()+' Advection-Diffusion PDE, Time = 1.0')
+    plt.ylim(-1,1)
+    plt.show()
+    fig.savefig(figure_name)
+  #
+  # plt.subplot(212)
+  # plt.plot(data[:,0],data[:,3])
+  # plt.xlabel('Iteration')
+  # plt.ylabel('Error')
+  # plt.grid(True)
+  # plt.show()
+  # 
 
 
 
 if __name__ == '__main__':
     
     # Defining the runtime parameters
-    simulationType     = "'diffusion'"
-    #simulationType     = "'advection_diffusion'"
+    #simulationType     = "'diffusion'"
+    simulationType     = "'advection_diffusion'"
     #simulationType     = "'advection'"
-    discretizationType = "'upwind'"
-    #discretizationType = "'center'"
-    N = 128
+    #discretizationType = "'upwind'"
+    discretizationType = "'center'"
+    N = 32
     xMin = 0.0
     xMax = 1.0
     threshold = 1.e-4
@@ -250,14 +355,25 @@ if __name__ == '__main__':
     runtimeParameters_init(simulationType, discretizationType, N, xMin, xMax, threshold, a, kappa, Ca, tmax)
     run_pde()
     
-    # Finding the filenames in directory
+    
+    #
+
+    # # Finding the filenames in directory
     for filename in os.listdir('../PDE/results'):
         filenameList.append(filename)
-      
-    # Plotting the files from directory  
+
+
+    print filenameList
+    
+    # # Plotting the files from directory
     for i in range(0,len(filenameList)):
-        t = i/10.0
-        plot_data(N, simulationType, discretizationType, filenameList[i], t)
+        plot_data_h(N, simulationType, discretizationType, filenameList[i], i)
+
+
+
+    # # Plotting the files from directory
+    # for i in range(0,len(filenameList)):
+    #     plot_data(N, simulationType, discretizationType, filenameList[i], i)
 
         # save_datFile(run_name)
         
