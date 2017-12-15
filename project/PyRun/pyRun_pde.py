@@ -180,22 +180,29 @@ def plot_data(N, simulationType, discretizationType, plotFilename, t):
     os.chdir('../PDE')    
     #plotFilename = 'output_'+str(t)+'.dat'
     print plotFilename
-    figure_name = './figures/result_'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")+'_'+str(t)+'.png'
+    
+    figureFolder = './figures/'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")
+    if not os.path.exists( figureFolder ):
+        os.system('mkdir '+figureFolder)
+
+    
+    
+    
+    figure_name = figureFolder+'/result_'+simulationType.strip("'")+'_'+str(N)+'_'+discretizationType.strip("'")+'_'+str(t)+'.png'
     
     data = np.loadtxt('./results/'+plotFilename)
     fig = plt.figure()
-    plt.plot(data[:,1],data[:,2],'o')
+    plt.plot(data[:,1],data[:,2],'o-')
     plt.ylabel('$u$')
-    # plt.title('Convergence of Function '+str(ftn_type)+' Using '+str(method_type)+'\n $x_0$ = '+str(init_guess)+' , Threshold = '+str(threshold))
     plt.grid(True)
     if (simulationType == "'diffusion'"):
         plt.ylim(0,100)
         plt.title('Diffusion PDE, Time = '+str(t))
     elif (simulationType == "'advection'"):
-        plt.title(discretizationType.strip("'")+' Advection PDE, Time = '+str(t))
+        plt.title(discretizationType.strip("'").title()+' Advection PDE, Time = '+str(t))
         plt.ylim(-1,1)
     else:
-        plt.title(discretizationType.strip("'")+' Advection-Diffusion PDE, Time = '+str(t))
+        plt.title(discretizationType.strip("'").title()+' Advection-Diffusion PDE, Time = '+str(t))
         plt.ylim(-1,1)
         
     plt.show()
@@ -222,16 +229,17 @@ def plot_data(N, simulationType, discretizationType, plotFilename, t):
 if __name__ == '__main__':
     
     # Defining the runtime parameters
-    #simulationType     = "'diffusion'"
-    simulationType     = "'advection_diffusion'"
+    simulationType     = "'diffusion'"
+    #simulationType     = "'advection_diffusion'"
     #simulationType     = "'advection'"
     discretizationType = "'upwind'"
-    N = 32
+    #discretizationType = "'center'"
+    N = 128
     xMin = 0.0
     xMax = 1.0
     threshold = 1.e-4
     a = 1.0
-    kappa = 1.156
+    kappa = 1.156 #0.01
     Ca = 1.0
     tmax = 1.0
     
@@ -242,25 +250,15 @@ if __name__ == '__main__':
     runtimeParameters_init(simulationType, discretizationType, N, xMin, xMax, threshold, a, kappa, Ca, tmax)
     run_pde()
     
+    # Finding the filenames in directory
     for filename in os.listdir('../PDE/results'):
-        print(filename)
         filenameList.append(filename)
-        
-        
-        
-    print filenameList
+      
+    # Plotting the files from directory  
     for i in range(0,len(filenameList)):
         t = i/10.0
         plot_data(N, simulationType, discretizationType, filenameList[i], t)
-  #
-  #   # for i in range(1,31):
-    #
-    #
-    #     t = i*10
-    #
-    #     plot_data(simulationType,t)
-        # run_rootFinder()
-        # plot_data(run_name, method_type, ftn_type, init_guess, threshold[i])
+
         # save_datFile(run_name)
         
     

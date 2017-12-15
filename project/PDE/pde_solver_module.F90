@@ -63,9 +63,6 @@ contains
 
 		call cfl()
 		frameTime = frameNumber*tmax/10.0
-		
-		print*, frameTime
-		
 		if ( dt > frameTime - t ) then
 			dt = frameTime - t
 			writeOutput = .TRUE.

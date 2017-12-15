@@ -26,7 +26,7 @@ program advection_diffusion
 	real, allocatable, dimension(:) :: x, uold, unew
 	real    :: t
 	integer :: frameNumber
-	logical :: writeOutput
+	logical :: writeOutput, runningOutTheClock
 	
 	!! Setting up runtime parameters
 	call setup_init()
@@ -43,6 +43,7 @@ program advection_diffusion
 	!! Initialize time and local variables
 	t = 0.0
 	writeOutput = .TRUE.
+	runningOutTheClock = .FALSE.
 	frameNumber = 1
 	call cfl()
 	
@@ -59,28 +60,27 @@ program advection_diffusion
 		if (writeOutput) then
 			call write_data(N+2, x, uold, t)
 			writeOutput = .false.
-			print*, 'Writing data'
+			print*, 'Writing data, Frame Number = ', frameNumber
 		end if
 		
 		!! In compute time step we compute the time step switch writOutput logical
 		if (t > 1.e-4) then
 			call compute_time_step(t, frameNumber, writeOutput)
 		end if
-		print*, 'frame number = ',frameNumber
-		
+
 		!! Note: Boundary Conditions are updated inside the update subroutines
 		if (simulationType == 'diffusion') then
 			call diffuse_update(uold, unew)
 			
 			!! Check error
 			call check_error(uold, unew)
-			if (error < threshold) then
+			if (error < threshold .AND. .NOT. runningOutTheClock) then
 				print*, '#----------------------------------------#'
 				print*, '# Final Time = ', t 
 				print*, '#----------------------------------------#'
 				!! Writing the last unew
-				call write_data(N+2, x, unew, t)         
-				exit
+				call write_data(N+2, x, unew, t)
+				runningOutTheClock = .TRUE.
 			end if
 		elseif(simulationType == 'advection') then
 			call advect_update(uold, unew)
